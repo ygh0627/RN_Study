@@ -1,0 +1,43 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import React, {useState} from 'react';
+
+import {
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
+
+import AddToDo from './components/AddToDo';
+import DateHead from './components/DateHead';
+import Empty from './components/Empty';
+import ToDoList from './components/ToDoList';
+
+const App = () => {
+  const [todos, setToDos] = useState([
+    {id: 1, text: '작업환경 설정', done: true},
+    {id: 2, text: 'rn 기초공부', done: false},
+    {id: 3, text: '투두리스트 만들어보기', done: false},
+  ]);
+  return (
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' && 'padding'}>
+        <DateHead />
+        {todos.length ? <ToDoList todos={todos} /> : <Empty />}
+        <AddToDo />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({});
+
+export default App;
