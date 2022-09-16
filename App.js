@@ -23,16 +23,36 @@ const App = () => {
   const [todos, setToDos] = useState([
     {id: 1, text: '작업환경 설정', done: true},
     {id: 2, text: 'rn 기초공부', done: false},
-    {id: 3, text: '투두리스트 만들어보기', done: false},
+    {id: 3, text: '투두리스트 만들어보기!', done: false},
   ]);
+
+  function onInsert(text) {
+    const id = todos.length ? Math.max(...todos.map(el => el.id)) + 1 : 1;
+    setToDos(prev => prev.concat({id, text, done: false}));
+  }
+
+  function onToggle(id) {
+    setToDos(prev =>
+      prev.map(el => (el.id === id ? {...el, done: !el.done} : el)),
+    );
+  }
+
+  function onRemove(id) {
+    setToDos(prev => prev.filter(el => el.id !== id));
+  }
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' && 'padding'}>
         <DateHead />
-        {todos.length ? <ToDoList todos={todos} /> : <Empty />}
-        <AddToDo />
+        {todos.length ? (
+          <ToDoList todos={todos} onToggle={onToggle} onRemove={onRemove} />
+        ) : (
+          <Empty />
+        )}
+        <AddToDo onInsert={onInsert} />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
